@@ -6,6 +6,8 @@
 //  Copyright © 2021 theSkimm. All rights reserved.
 //
 
+import Foundation
+
 public enum ArchiveLocation {
 
     case filesystem(folderPath: URL = FileManager.default.documentsDirectory)

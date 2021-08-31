@@ -1,11 +1,25 @@
-    import XCTest
-    @testable import Archivable
+import XCTest
+@testable import Archivable
 
-    final class ArchivableTests: XCTestCase {
-        func testExample() {
-            // This is an example of a functional test case.
-            // Use XCTAssert and related functions to verify your tests produce the correct
-            // results.
-            XCTAssertEqual(Archivable().text, "Hello, World!")
-        }
+final class ArchivableTests: XCTestCase {
+
+    private struct User: Archivable {
+
+        let name: String
+        let age: Int
+
+        static let testUser = User(name: "Testy", age: 33)
     }
+
+    override class func setUp() {
+        super.setUp()
+
+        try! User.testUser.archive()
+    }
+
+    func testExample() {
+        let user = User.retrieve()
+
+        XCTAssertEqual(user?.name, "Testy")
+    }
+}
