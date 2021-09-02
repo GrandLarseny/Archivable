@@ -1,16 +1,16 @@
 //
 //  Archivable.swift
-//  theskimm
+//  Archivable
 //
 //  Created by Daniel Larsen on 3/24/21.
-//  Copyright © 2021 theSkimm. All rights reserved.
+//  Copyright © 2021 BottleRocket. All rights reserved.
 //
 
 import Foundation
 
 public enum ArchiveLocation {
 
-    case filesystem(folderPath: URL = FileManager.default.documentsDirectory)
+    case filesystem(directory: ArchiveFilePath)
     case keychain
     case userDefaults
 }
@@ -18,6 +18,9 @@ public enum ArchiveLocation {
 public protocol Archivable: Codable {
 
     static var location: ArchiveLocation { get }
+    static var encoder: Encoder { get }
+    static var decoder: Decoder { get }
+    static var dateStrategy: DateFormatter { get }
 
     var archiveKey: String { get }
 }
@@ -72,8 +75,8 @@ public extension Archivable {
         switch location {
         case .userDefaults:
             UserDefaults.standard.set(data, forKey: archiveKey)
-        case .filesystem(let path):
-            FileManager.default.createFile(atPath: path.appendingPathComponent(archiveKey).absoluteString, contents: data)
+        case .filesystem(let directory):
+            FileManager.default.createFile(atPath: directory.url.appendingPathComponent(archiveKey).absoluteString, contents: data)
         case .keychain:
             if let data = data {
                 try keychainSave(data: data, to: archiveKey)
@@ -90,8 +93,8 @@ public extension Archivable {
         case .userDefaults:
             guard let data = UserDefaults.standard.data(forKey: key) else { return nil }
             return try? decode(data: data)
-        case .filesystem(let path):
-            guard let data = FileManager.default.contents(atPath: path.appendingPathComponent(archiveKey).absoluteString) else { return nil }
+        case .filesystem(let directory):
+            guard let data = FileManager.default.contents(atPath: directory.url.appendingPathComponent(archiveKey).absoluteString) else { return nil }
             return try? decode(data: data)
         case .keychain:
             guard let data = try? keychainRead(key: archiveKey) else { return nil }
@@ -105,8 +108,8 @@ public extension Archivable {
         switch location {
         case .userDefaults:
             UserDefaults.standard.removeObject(forKey: archiveKey)
-        case .filesystem(let path):
-            try? FileManager.default.removeItem(at: path.appendingPathComponent(archiveKey))
+        case .filesystem(let directory):
+            try? FileManager.default.removeItem(at: directory.url.appendingPathComponent(archiveKey))
         case .keychain:
             try? keychainDelete(key: archiveKey)
         }

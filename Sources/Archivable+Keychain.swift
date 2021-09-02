@@ -2,7 +2,8 @@
 //  Archivable+Keychain.swift
 //  Archivable
 //
-//  Created by Daniel Larsen on 5/20/21.
+//  Created by Daniel Larsen on 3/24/21.
+//  Copyright © 2021 BottleRocket. All rights reserved.
 //
 
 import Foundation

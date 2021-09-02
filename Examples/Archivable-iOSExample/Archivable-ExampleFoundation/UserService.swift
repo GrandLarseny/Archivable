@@ -6,3 +6,12 @@
 //
 
 import Foundation
+
+class UserService {
+
+    static var shared = UserService()
+
+    func authenticate() -> UserToken {
+        return UserToken(token: UUID().uuidString)
+    }
+}

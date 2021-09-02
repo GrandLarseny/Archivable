@@ -6,9 +6,16 @@
 //
 
 import Archivable
-import Foundation
+import SwiftUI
 
 struct UserProfile: Archivable {
 
-    let profileImage: Image
+    static var location: ArchiveLocation { .filesystem(directory: .documents) }
+
+    let profileImageData: Data
+    
+    var profileImage: Image? {
+        guard let uiImage = UIImage(data: profileImageData) else { return nil }
+        return Image(uiImage: uiImage)
+    }
 }
