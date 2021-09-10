@@ -18,9 +18,6 @@ public enum ArchiveLocation {
 public protocol Archivable: Codable {
 
     static var location: ArchiveLocation { get }
-    static var encoder: Encoder { get }
-    static var decoder: Decoder { get }
-    static var dateStrategy: DateFormatter { get }
 
     var archiveKey: String { get }
 }
@@ -31,11 +28,11 @@ public extension Archivable {
 
     static var location: ArchiveLocation { .userDefaults }
 
-    // MARK: Default functions
-
     static var archiveKey: String {
         return "archive.\(type(of: Self.self))"
     }
+
+    // MARK: Default functions
 
     static func encode(_ archivable: Self) throws -> Data {
         return try JSONEncoder().encode(archivable)

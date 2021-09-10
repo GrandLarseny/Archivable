@@ -8,7 +8,7 @@
 import Archivable
 import Foundation
 
-struct User: Archivable {
+struct Friend: Archivable {
 
     let name: String
     let age: Int
