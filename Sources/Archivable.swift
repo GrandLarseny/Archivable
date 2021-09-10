@@ -22,6 +22,12 @@ public protocol Archivable: Codable {
     var archiveKey: String { get }
 }
 
+enum FileManagerError: Error {
+
+    case fileCreationFailed
+    case fileUpdateFailed
+}
+
 // MARK: - Default implementation
 
 public extension Archivable {
@@ -73,7 +79,9 @@ public extension Archivable {
         case .userDefaults:
             UserDefaults.standard.set(data, forKey: archiveKey)
         case .filesystem(let directory):
-            FileManager.default.createFile(atPath: directory.url.appendingPathComponent(archiveKey).absoluteString, contents: data)
+            if !FileManager.default.createFile(atPath: directory.url.appendingPathComponent(archiveKey).absoluteString, contents: data) {
+                throw FileManagerError.fileCreationFailed
+            }
         case .keychain:
             if let data = data {
                 try keychainSave(data: data, to: archiveKey)

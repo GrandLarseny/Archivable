@@ -16,7 +16,7 @@ public enum ArchiveFilePath {
     case sharedContainerURL(securityApplicationGroupIdentifier: String)
     case custom(path: URL)
 
-    var url: URL {
+    public var url: URL {
         let manager = FileManager.default
 
         switch self {

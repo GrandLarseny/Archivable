@@ -43,6 +43,7 @@
 		6522914526DEE16B00916B85 /* Friend.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Friend.swift; sourceTree = "<group>"; };
 		6522914626DEE16B00916B85 /* UserService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
 		6522914726DEE16B00916B85 /* UserProfile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfile.swift; sourceTree = "<group>"; };
+		65C9817A26EC116600E93FF1 /* Archivable-Playground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = "Archivable-Playground.playground"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +64,7 @@
 				652290E926DEDAAC00916B85 /* Archivable */,
 				652290D826DE902C00916B85 /* Archivable-iOSExample */,
 				6522912026DEE11900916B85 /* Shared */,
+				65C9817926EC116600E93FF1 /* Playgrounds */,
 				652290D726DE902C00916B85 /* Products */,
 				652290EA26DEDB1500916B85 /* Frameworks */,
 			);
@@ -112,6 +114,15 @@
 				6522914426DEE16B00916B85 /* UserToken.swift */,
 			);
 			path = Shared;
+			sourceTree = "<group>";
+		};
+		65C9817926EC116600E93FF1 /* Playgrounds */ = {
+			isa = PBXGroup;
+			children = (
+				65C9817A26EC116600E93FF1 /* Archivable-Playground.playground */,
+			);
+			name = Playgrounds;
+			path = ../Playgrounds;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

@@ -8,10 +8,9 @@ struct User: Archivable {
 
 struct Profile: Archivable {
 
-    static var location: ArchiveLocation { .filesystem(directory: .caches) }
+    static var location: ArchiveLocation { .filesystem(directory: .documents) }
 
     let image: Data
-
 }
 
 struct Authentication: Archivable {
@@ -36,13 +35,9 @@ if !User.hasArchive {
 }
 
 func printArchives() {
-    if let user = User.retrieve(),
-       let profile = Profile.retrieve() {
-//       let auth = Authentication.retrieve() {
-        print(user.name)
-        print(profile)
-//        print(auth.token)
-    }
+    print("user = \(User.retrieve()?.name ?? "<unable to retrieve>")")
+    print("profile = \(Profile.retrieve().debugDescription)")
+    print("auth = \(Authentication.retrieve()?.token ?? "<unable to retrieve>")")
 }
 
 printArchives()
