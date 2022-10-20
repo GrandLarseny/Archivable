@@ -1,5 +1,12 @@
 import Foundation
 
+
+/// This playground demonstrates simple archiving and retrieval of a structure
+/// Since Swift playgrounds do not include any access to the Keychain, we cannot
+/// demonstrate archiving a structure to the keychain.
+///
+///
+
 struct User: Archivable {
 
     let name: String
@@ -13,31 +20,28 @@ struct Profile: Archivable {
     let image: Data
 }
 
-struct Authentication: Archivable {
-
-    static var location: ArchiveLocation { .keychain }
-
-    let token: String
+func printArchives() {
+    print("user = \(User.retrieve()?.name ?? "<unable to retrieve>")")
+    print("profile image length = \(Profile.retrieve()?.image.count ?? -1)")
 }
+
+func resetArchives() {
+    User.removeArchive()
+    Profile.removeArchive()
+}
+
+resetArchives()
 
 if !User.hasArchive {
     let user = User(name: "Testy", age: 33)
-    let profile = Profile(image: try! Data(contentsOf: URL(string: "https://emojis.slackmojis.com/emojis/images/1535143994/4548/dealwhithit.gif?1535143994")!))
-    let _ = Authentication(token: UUID().uuidString)
+    let profile = Profile(image: try! Data(contentsOf: URL(string: "https://daringfireball.net/graphics/author/addison-bw-425.jpg")!))
 
     do {
         try user.archive()
         try profile.archive()
-//        try auth.archive() // This doesn't work in playgrounds for now
     } catch {
         print(error)
     }
-}
-
-func printArchives() {
-    print("user = \(User.retrieve()?.name ?? "<unable to retrieve>")")
-    print("profile = \(Profile.retrieve().debugDescription)")
-    print("auth = \(Authentication.retrieve()?.token ?? "<unable to retrieve>")")
 }
 
 printArchives()

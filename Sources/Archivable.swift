@@ -75,12 +75,17 @@ public extension Archivable {
 
     static func archive(_ archivable: Self?, archiveKey: String) throws {
         let data = try archivable?.encode()
+
         switch location {
         case .userDefaults:
             UserDefaults.standard.set(data, forKey: archiveKey)
         case .filesystem(let directory):
-            if !FileManager.default.createFile(atPath: directory.url.appendingPathComponent(archiveKey).absoluteString, contents: data) {
-                throw FileManagerError.fileCreationFailed
+            let archiveURL = directory.url.appendingPathComponent(archiveKey)
+
+            if let data = data {
+                try data.write(to: archiveURL, options: .atomic)
+            } else if FileManager.default.fileExists(atPath: archiveURL.absoluteString) {
+                try FileManager.default.removeItem(at: archiveURL)
             }
         case .keychain:
             if let data = data {
@@ -99,7 +104,9 @@ public extension Archivable {
             guard let data = UserDefaults.standard.data(forKey: key) else { return nil }
             return try? decode(data: data)
         case .filesystem(let directory):
-            guard let data = FileManager.default.contents(atPath: directory.url.appendingPathComponent(archiveKey).absoluteString) else { return nil }
+            let archiveURL = directory.url.appendingPathComponent(archiveKey)
+
+            guard let data = try? Data(contentsOf: archiveURL) else { return nil }
             return try? decode(data: data)
         case .keychain:
             guard let data = try? keychainRead(key: archiveKey) else { return nil }

@@ -13,8 +13,6 @@ public enum ArchiveFilePath {
     case documents
     case caches
     case applicationSupport
-    case sharedContainerURL(securityApplicationGroupIdentifier: String)
-    case custom(path: URL)
 
     public var url: URL {
         let manager = FileManager.default
@@ -27,14 +25,6 @@ public enum ArchiveFilePath {
             }
 
             return folder
-        case .sharedContainerURL(let groupIdentifier):
-            guard let sharedContainerURL = manager.containerURL(forSecurityApplicationGroupIdentifier: groupIdentifier) else {
-                fatalError("Could not locate Shared Container URL.")
-            }
-
-            return sharedContainerURL
-        case .custom(let path):
-            return path
         }
     }
 
@@ -50,7 +40,6 @@ private extension ArchiveFilePath {
         case .documents: return .documentDirectory
         case .caches: return .cachesDirectory
         case .applicationSupport: return .applicationSupportDirectory
-        default: return nil
         }
     }
 }
