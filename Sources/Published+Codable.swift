@@ -15,7 +15,7 @@ private class PublishedWrapper<T> {
     }
 }
 
-extension Published {
+public extension Published {
     var unofficialValue: Value {
         PublishedWrapper(self).value
     }
