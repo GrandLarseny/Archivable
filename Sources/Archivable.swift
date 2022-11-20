@@ -99,18 +99,23 @@ public extension Archivable {
     }
 
     static func retrieve(key: String = archiveKey) -> Self? {
-        switch location {
-        case .userDefaults:
-            guard let data = UserDefaults.standard.data(forKey: key) else { return nil }
-            return try? decode(data: data)
-        case .filesystem(let directory):
-            let archiveURL = directory.url.appendingPathComponent(archiveKey)
+        do {
+            switch location {
+            case .userDefaults:
+                guard let data = UserDefaults.standard.data(forKey: key) else { return nil }
+                return try decode(data: data)
+            case .filesystem(let directory):
+                let archiveURL = directory.url.appendingPathComponent(archiveKey)
 
-            guard let data = try? Data(contentsOf: archiveURL) else { return nil }
-            return try? decode(data: data)
-        case .keychain:
-            guard let data = try? keychainRead(key: archiveKey) else { return nil }
-            return try? decode(data: data)
+                guard let data = try? Data(contentsOf: archiveURL) else { return nil }
+                return try decode(data: data)
+            case .keychain:
+                guard let data = try? keychainRead(key: archiveKey) else { return nil }
+                return try decode(data: data)
+            }
+        } catch {
+            dump(error)
+            return nil
         }
     }
 
